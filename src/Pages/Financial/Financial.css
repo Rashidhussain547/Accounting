@@ -1,76 +1,117 @@
 /*This section is for Income statement styling*/
 .income-statement {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f2f2f2;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    text-align: center;
-    margin-top: 50px;
-  }
-  
-  .income-statement h2 {
-    margin-bottom: 20px;
-  }
-  
-  .income-statement h3 {
-    margin-bottom: 10px;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-    text-align: left;
-  }
-  
-  label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  input[type="text"],
-  input[type="number"] {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  button {
-    display: block;
-    margin-top: 10px;
-    padding: 8px 16px;
-    background-color: #4caf50;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
-  table {
-    margin-top: 20px;
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  table th,
-  table td {
-    padding: 8px;
-    border: 1px solid #ccc;
-    text-align: center;
-  }
-  
-  table th {
-    font-weight: bold;
-  }
-  
-  .summary {
-    margin-top: 20px;
-    text-align: left;
-  }
-  
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+h3 {
+  margin-bottom: 10px;
+}
+
+table {
+  width: 100%;
+  margin-bottom: 20px;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+}
+
+thead th {
+  background-color: #333;
+  color: #fff;
+}
+
+tfoot td {
+  background-color: #ddd;
+  font-weight: bold;
+}
+
+tfoot td:first-child {
+  text-align: right;
+}
+
+tfoot td:last-child {
+  text-align: left;
+}
+
+.net-income {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+/*This section is for OE statement styling*/
+
+.owner-equity-statement {
+  margin-top: 100px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.column-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.column {
+  flex: 1;
+  margin-right: 20px;
+}
+
+h3 {
+  margin-bottom: 10px;
+}
+
+.column > div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.total-accounts,
+.total-withdrawals-losses {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.owner-equity {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+
+
+
+
+/*This section is for OE statement styling*/
+
+
+.balance-sheet-statement{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f2f2f2;
+  padding: 20px;
+  margin-top: 100px;
+}
+#oe{
+  font-weight: normal;
+}
+#EqualityBold{
+  font-weight: bold;
+}
