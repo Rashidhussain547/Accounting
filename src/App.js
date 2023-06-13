@@ -8,10 +8,12 @@ import Trail from './Pages/Trail';
 import Income from './Pages/Financial/Icome';
 import OE from './Pages/Financial/OE';
 import Balance from './Pages/Financial/Balance';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 function App() {
   return (
-   <>
+   <Provider store={store}>
     <Navbar />
     {/* <SideBar/> */}
     <BrowserRouter>
@@ -23,7 +25,7 @@ function App() {
             <Route  path="/Balance" element={<Balance />} />
           </Routes>
         </BrowserRouter>
-   </>
+   </Provider>
   );
 }
 

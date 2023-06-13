@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import './Journal.css'
+import { addJournalEntry } from '../redux/actions/journal.action';
+import { useSelector,useDispatch } from 'react-redux';
+import { ToastContainer,toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Circles } from 'react-loader-spinner';
 
 const Journal = () => {
-  const [debit, setDebit] = useState({ accountName: '', accountType: '', amount: '' });
-  const [credit, setCredit] = useState({ accountName: '', accountType: '', amount: '' });
+  const [debit, setDebit] = useState({ account: '', account_type: '', amount: Number()});
+  const [credit, setCredit] = useState({ account: '', account_type: '', amount: Number() });
   const [description, setDescription] = useState('');
+  const dispatch = useDispatch()
+  const [loading,setLoading] = useState(false)
 
   const handleDebitChange = (e) => {
     setDebit({ ...debit, [e.target.name]: e.target.value });
@@ -12,6 +19,7 @@ const Journal = () => {
   
   const handleCreditChange = (e) => {
     setCredit({ ...credit, [e.target.name]: e.target.value });
+    console.log(credit.amount)
   };
 
   const handleDescriptionChange = (e) => {
@@ -20,20 +28,42 @@ const Journal = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add your logic to handle the form submission
+    setLoading(true)
+    console.log({
+      debit,
+      credit
+    })
+    dispatch(addJournalEntry({
+      debit,
+      credit,
+      statement:description
+    })).then((res) => {
+      console.log(res)
+      if (res.payload.success) {
+        toast.success("Entry added successfully.", {
+          position: toast.POSITION.TOP_RIGHT
+      })
+      } else {
+        toast.error('An error occured!', {
+          position: toast.POSITION.TOP_RIGHT
+      });
+      }
+      setLoading(false)
+    })
+
     console.log('Debit:', debit);
     console.log('Credit:', credit);    
     console.log('Description:', description);
     // Reset the form
-    setDebit({ accountName: '', accountType: '', amount: '' });
-    setCredit({ accountName: '', accountType: '', amount: '' });
+    setDebit({ account: '', account_type: '', amount: 0 });
+    setCredit({ account: '', account_type: '', amount: 0 });
     setDescription('');
   };
 
   return (
     <div className="journal-form">
       <h2>Journal Entries </h2>
-      <form onSubmit={handleSubmit}>
+    {!loading ? <form onSubmit={handleSubmit}>
         <div className="form-row">
           <div className="form-column">
             <h3>Debit</h3>
@@ -42,8 +72,8 @@ const Journal = () => {
               <input
                 type="text"
                 id="debitAccountName"
-                name="accountName"
-                value={debit.accountName}
+                name="account"
+                value={debit.account}
                 onChange={handleDebitChange}
               />
             </div>
@@ -52,8 +82,8 @@ const Journal = () => {
               <input
                 type="text"
                 id="debitAccountType"
-                name="accountType"
-                value={debit.accountType}
+                name="account_type"
+                value={debit.account_type}
                 onChange={handleDebitChange}
               />
             </div>
@@ -75,8 +105,8 @@ const Journal = () => {
               <input
                 type="text"
                 id="creditAccountName"
-                name="accountName"
-                value={credit.accountName}
+                name="account"
+                value={credit.account}
                 onChange={handleCreditChange}
               />
             </div>
@@ -85,8 +115,8 @@ const Journal = () => {
               <input
                 type="text"
                 id="creditAccountType"
-                name="accountType"
-                value={credit.accountType}
+                name="account_type"
+                value={credit.account_type}
                 onChange={handleCreditChange}
               />
             </div>
@@ -112,7 +142,20 @@ const Journal = () => {
           />
         </div>
         <button type="submit">Submit</button>
-      </form>
+      </form>:
+      <div style={{display:"flex",justifyContent:"center",marginTop:"50px"}}>
+      <Circles
+      height="80"
+      width="80"
+      color="gray"
+      ariaLabel="circles-loading"
+      wrapperStyle={{}}
+      wrapperClass=""
+      visible={true}
+    />
+    </div>
+      }
+      <ToastContainer  hideProgressBar={true} autoClose={2500}/>
     </div>
   );
 };
