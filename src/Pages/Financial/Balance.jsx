@@ -1,8 +1,18 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import './Financial.css'
+import { getBalanceSheet } from '../../redux/actions/balanceSheet.action';
+import { useDispatch,useSelector } from 'react-redux';
+
 
 const Balance= () => {
   // Predefined data for assets
+  const dispatch = useDispatch()
+  const[loading,setLoading] = useState(false)
+
+  const { balance } = useSelector((state) => {
+    return state;
+  });
+  console.log(balance)
   const assetsData = [
     { accountName: 'Asset 1', amount: 500 },
     { accountName: 'Asset 2', amount: 700 },
@@ -15,6 +25,17 @@ const Balance= () => {
     { accountName: 'Liability 2', amount: 400 },
     { accountName: 'Liability 3', amount: 100 },
   ];
+  useEffect(()=>{
+    setLoading(true)
+    dispatch(getBalanceSheet()).then((res) => {
+      if (res?.payload?.success) {
+        
+      } else {
+      }
+      setLoading(false)
+    })
+    
+  },[])
 
   // Calculate total assets amount
   const totalAssets = assetsData.reduce((total, account) => total + account.amount, 0);
@@ -36,36 +57,46 @@ const Balance= () => {
       <div className="section">
         <div className="column">
           <h3>Assets</h3>
-          {assetsData.map((account, index) => (
+          {balance?.payload?.[0]?.asset_array.map((account, index) => (
             <div key={index}>
-              <span>{account.accountName}</span>
-              <span>{account.amount}</span>
+              <span>{account.name}</span>
+              <span>{account?.credit ? account?.credit:account?.debit}</span>
             </div>
           ))}
           <div className="total-assets">
             <span>Total Assets</span>
-            <span id='EqualityBold'>{totalAssets}</span>
+            <span id='EqualityBold'>{balance?.payload?.[0]?.asset}</span>
           </div>
         </div>
         <div className="column">
           <h3>Liabilities</h3>
-          {liabilitiesData.map((account, index) => (
+          {balance?.payload?.[0]?.liab_array.map((account, index) => (
             <div key={index}>
-              <span>{account.accountName}</span>
-              <span>{account.amount}</span>
+              <span>{account.name}</span>
+              <span>{account?.credit ? account?.credit:account?.debit}</span>
             </div>
           ))}
           <div className="total-liabilities">
             <span>Total Liabilities</span>
-            <span>{totalLiabilities}</span>
+            <span>{balance?.payload?.[0]?.liab}</span>
+          </div>
+          <h3>Owner Equity</h3>
+          {balance?.payload?.[0]?.equit_array.map((account, index) => (
+            <div key={index}>
+              <span>{account.name}</span>
+              <span>{account?.credit ? account?.credit:account?.debit}</span>
+            </div>
+          ))}
+          <div className="total-liabilities">
+            <span>Total Owner Equity</span>
+            <span>{balance?.payload?.[0]?.equi}</span>
           </div>
           <div className="owner-equity">
-            <span>Owner's Equity</span>
-            <span id='oe'>{ownerEquity}</span>
+            <span>Liabilities & Owner's Equity</span>
           </div>
           <div className='Sum'>
             <span>Liabilities + OE = </span> &nbsp;&nbsp;
-            <span id='EqualityBold'>{CheckEquality}</span>
+            <span id='EqualityBold'>{balance?.payload?.[0]?.liab + balance?.payload?.[0]?.equi}</span>
           </div>
         </div>
       </div>

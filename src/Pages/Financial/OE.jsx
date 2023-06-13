@@ -1,16 +1,37 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import './Financial.css'
+import { getOwnerEquity } from '../../redux/actions/ownerEquity.action';
+import { useDispatch,useSelector } from 'react-redux';
 
 const OE = () => {
   // Predefined data
-  const equityData = [
-    { accountName: 'Account 1', amount: 100 },
-    { accountName: 'Account 2', amount: 200 },
-    { accountName: 'Account 3', amount: 150 },
-  ];
-
+  const dispatch = useDispatch()
+  let totalEquity=0
+  const { ownerEquity } = useSelector((state) => {
+    return state;
+  });
+  const[loading,setLoading] = useState(false)
+  console.log(ownerEquity)
+  useEffect(()=>{
+    setLoading(true)
+    dispatch(getOwnerEquity()).then((res) => {
+      if (res?.payload?.success) {
+        
+      } else {
+      }
+      setLoading(false)
+    })
+    
+  },[])
+  for(var i=0;i<ownerEquity?.payload?.[0]?.equity_account?.length;i++){
+    if(ownerEquity?.payload?.[0]?.equity_account[i].credit==0){
+      totalEquity-=ownerEquity?.payload?.[0]?.equity_account[i].debit
+    }else{
+      totalEquity+=ownerEquity?.payload?.[0]?.equity_account[i].credit
+    }
+  }
   // Calculate the sum of account amounts
-  const sumOfAccounts = equityData.reduce((sum, account) => sum + account.amount, 0);
+  const sumOfAccounts = ownerEquity?.payload?.[0]?.equity_account?.reduce((sum, account) => sum + account.credit - account.debit, 0);
 
   // Predefined data for withdrawals and losses
   const withdrawalsAndLosses = [
@@ -19,10 +40,10 @@ const OE = () => {
   ];
 
   // Calculate the sum of withdrawals and losses
-  const sumOfWithdrawalsAndLosses = withdrawalsAndLosses.reduce((sum, account) => sum + account.amount, 0);
+  const sumOfWithdrawalsAndLosses = ownerEquity?.payload?.[0]?.equity_account?.reduce((sum, account) => sum + account.credit -account.debit, 0);
 
   // Calculate the owner's equity
-  const ownerEquity = sumOfAccounts - sumOfWithdrawalsAndLosses;
+
 
   return (
     <div className="owner-equity-statement">
@@ -30,10 +51,10 @@ const OE = () => {
       <div className="column-container">
         <div className="column">
           <h3>Accounts</h3>
-          {equityData.map((account, index) => (
+          {ownerEquity?.payload?.[0]?.equity_account?.map((account, index) => (
             <div key={index}>
-              <span>{account.accountName}</span>
-              <span>{account.amount}</span>
+              <span>{account.account_name}</span>
+               <span>{account?.credit-account?.debit }</span>
             </div>
           ))}
           <div className="total-accounts">
@@ -43,21 +64,21 @@ const OE = () => {
         </div>
         <div className="column">
           <h3>Withdraws and Losses</h3>
-          {withdrawalsAndLosses.map((account, index) => (
+          {/* {withdrawalsAndLosses.map((account, index) => (
             <div key={index}>
               <span>{account.accountName}</span>
               <span>{account.amount}</span>
             </div>
-          ))}
+          ))} */}
           <div className="total-withdrawals-losses">
-            <span>Total</span>
-            <span>{sumOfWithdrawalsAndLosses}</span>
+            {/* <span>Total</span>
+            <span>{sumOfWithdrawalsAndLosses}</span> */}
           </div>
         </div>
       </div>
       <div className="owner-equity">
-        <span>Owner's Equity</span>
-        <span>{ownerEquity}</span>
+        <span>Owner's total Equity</span>
+        <span>{totalEquity}</span>
       </div>
     </div>
   );
