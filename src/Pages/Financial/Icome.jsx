@@ -1,45 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Financial.css'
 
-const Income = () => {
-  const [revenues, setRevenues] = useState([]);
-  const [expenses, setExpenses] = useState([]);
+const Income= () => {
+  // DATA
+  const revenues = [
+    { accountName: 'Revenue 1', amount: 100 },
+    { accountName: 'Revenue 2', amount: 200 },
+    { accountName: 'Revenue 3', amount: 150 },
+  ];
 
-  const [newRevenue, setNewRevenue] = useState({
-    accountName: '',
-    amount: 0,
-  });
+  const expenses = [
+    { accountName: 'Expense 1', amount: 50 },
+    { accountName: 'Expense 2', amount: 80 },
+    { accountName: 'Expense 3', amount: 120 },
+  ];
 
-  const [newExpense, setNewExpense] = useState({
-    accountName: '',
-    amount: 0,
-  });
+  // Calculate total revenue and total expense
+  const totalRevenue = revenues.reduce((sum, revenue) => sum + revenue.amount, 0);
+  const totalExpense = expenses.reduce((sum, expense) => sum + expense.amount, 0);
 
-  const handleRevenueInputChange = (e) => {
-    setNewRevenue({ ...newRevenue, [e.target.name]: e.target.value });
-  };
-
-  const handleExpenseInputChange = (e) => {
-    setNewExpense({ ...newExpense, [e.target.name]: e.target.value });
-  };
-
-  const handleAddRevenue = (e) => {
-    e.preventDefault();
-    setRevenues([...revenues, newRevenue]);
-    setNewRevenue({ accountName: '', amount: 0 });
-  };
-
-  const handleAddExpense = (e) => {
-    e.preventDefault();
-    setExpenses([...expenses, newExpense]);
-    setNewExpense({ accountName: '', amount: 0 });
-  };
-
-  // Calculate the total revenue and total expense
-  const totalRevenue = revenues.reduce((sum, revenue) => sum + parseFloat(revenue.amount), 0);
-  const totalExpense = expenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
-
-  // Calculate the net income
+  // Calculate net income
   const netIncome = totalRevenue - totalExpense;
 
   return (
@@ -47,29 +27,6 @@ const Income = () => {
       <h2>Income Statement</h2>
       <div>
         <h3>Revenues</h3>
-        <form onSubmit={handleAddRevenue}>
-          <div className="form-group">
-            <label htmlFor="revenueAccountName">Account Name:</label>
-            <input
-              type="text"
-              id="revenueAccountName"
-              name="accountName"
-              value={newRevenue.accountName}
-              onChange={handleRevenueInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="revenueAmount">Amount:</label>
-            <input
-              type="number"
-              id="revenueAmount"
-              name="amount"
-              value={newRevenue.amount}
-              onChange={handleRevenueInputChange}
-            />
-          </div>
-          <button type="submit">Add Revenue</button>
-        </form>
         <table>
           <thead>
             <tr>
@@ -85,33 +42,16 @@ const Income = () => {
               </tr>
             ))}
           </tbody>
+          <tfoot>
+            <tr>
+              <td>Total Revenues:</td>
+              <td>{totalRevenue}</td>
+            </tr>
+          </tfoot>
         </table>
       </div>
       <div>
         <h3>Expenses</h3>
-        <form onSubmit={handleAddExpense}>
-          <div className="form-group">
-            <label htmlFor="expenseAccountName">Account Name:</label>
-            <input
-              type="text"
-              id="expenseAccountName"
-              name="accountName"
-              value={newExpense.accountName}
-              onChange={handleExpenseInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="expenseAmount">Amount:</label>
-            <input
-              type="number"
-              id="expenseAmount"
-              name="amount"
-              value={newExpense.amount}
-              onChange={handleExpenseInputChange}
-            />
-          </div>
-          <button type="submit">Add Expense</button>
-        </form>
         <table>
           <thead>
             <tr>
@@ -127,13 +67,17 @@ const Income = () => {
               </tr>
             ))}
           </tbody>
+          <tfoot>
+            <tr>
+              <td>Total Expenses:</td>
+              <td>{totalExpense}</td>
+            </tr>
+          </tfoot>
         </table>
       </div>
-      <div className="summary">
-        <h3>Summary</h3>
-        <div>Total Revenue: {totalRevenue}</div>
-        <div>Total Expense: {totalExpense}</div>
-        <div>Net Income: {netIncome}</div>
+      <div>
+        <h3>Net Income</h3>
+        <div>{netIncome}</div>
       </div>
     </div>
   );
