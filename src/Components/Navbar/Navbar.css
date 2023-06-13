@@ -1,0 +1,67 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+}
+
+.navbar-brand {
+  font-weight: bold;
+}
+
+.menu-icon {
+  cursor: pointer;
+}
+
+.icon,
+.icon-open {
+  display: inline-block;
+  width: 20px;
+  height: 2px;
+  background-color: #fff;
+  margin: 4px 0;
+  transition: transform 0.3s;
+}
+
+.icon-open {
+  transform: rotate(-45deg);
+}
+
+.menu-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.menu-items li {
+  margin-right: 20px;
+  cursor: pointer;
+  position: relative; /* Added for submenu positioning */
+}
+
+.submenu {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  padding: 10px;
+  top: 100%;
+  left: 0;
+  z-index: 1;
+}
+
+.menu-items li:hover .submenu {
+  display: block;
+}
+
+.submenu li {
+  margin-top: 10px;
+  cursor: pointer;
+}
+a{
+  text-decoration: none;
+  cursor: pointer;
+  color: white;
+}
