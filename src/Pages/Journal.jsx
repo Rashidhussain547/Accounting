@@ -19,7 +19,6 @@ const Journal = () => {
   
   const handleCreditChange = (e) => {
     setCredit({ ...credit, [e.target.name]: e.target.value });
-    console.log(credit.amount)
   };
 
   const handleDescriptionChange = (e) => {
@@ -28,28 +27,28 @@ const Journal = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true)
-    console.log({
-      debit,
-      credit
-    })
-    dispatch(addJournalEntry({
-      debit,
-      credit,
-      statement:description
-    })).then((res) => {
-      console.log(res)
-      if (res.payload.success) {
-        toast.success("Entry added successfully.", {
-          position: toast.POSITION.TOP_RIGHT
-      })
-      } else {
-        toast.error('An error occured!', {
-          position: toast.POSITION.TOP_RIGHT
-      });
-      }
-      setLoading(false)
-    })
+    // setLoading(true)
+    // console.log({
+    //   debit,
+    //   credit
+    // })
+    // dispatch(addJournalEntry({
+    //   debit,
+    //   credit,
+    //   statement:description
+    // })).then((res) => {
+    //   console.log(res)
+    //   if (res.payload.success) {
+    //     toast.success("Entry added successfully.", {
+    //       position: toast.POSITION.TOP_RIGHT
+    //   })
+    //   } else {
+    //     toast.error('An error occured!', {
+    //       position: toast.POSITION.TOP_RIGHT
+    //   });
+    //   }
+    //   setLoading(false)
+    // })
 
     console.log('Debit:', debit);
     console.log('Credit:', credit);    
@@ -79,13 +78,19 @@ const Journal = () => {
             </div>
             <div className="form-group">
               <label htmlFor="debitAccountType">Account Type</label>
-              <input
+              <select  onChange={handleDebitChange} name="account_type" value={debit.account_type} style={{width:"106%",padding:"8px",border:"1px solid #ccc",borderRadius:"5px"}}>
+                <option value=""></option>
+                <option value="owner equity">Owner Equity</option>
+                <option value="asset">Asset</option>
+                <option value="liability">Liability</option>
+              </select>
+              {/* <input
                 type="text"
                 id="debitAccountType"
                 name="account_type"
                 value={debit.account_type}
                 onChange={handleDebitChange}
-              />
+              /> */}
             </div>
             <div className="form-group">
               <label htmlFor="debitAmount">Amount</label>
@@ -112,13 +117,19 @@ const Journal = () => {
             </div>
             <div className="form-group">
               <label htmlFor="creditAccountType">Account Type</label>
-              <input
+              <select placeholder='Select acount type' value={credit.account_type} name='account_type' onChange={handleCreditChange} style={{width:"106%",padding:"8px",border:"1px solid #ccc",borderRadius:"5px"}}>
+              <option value=""></option>               
+                <option value="owner equity">Owner Equity</option>
+                <option value="asset">Asset</option>
+                <option value="liability">Liability</option>
+              </select>
+              {/* <input
                 type="text"
                 id="creditAccountType"
                 name="account_type"
                 value={credit.account_type}
                 onChange={handleCreditChange}
-              />
+              /> */}
             </div>
             <div className="form-group">
               <label htmlFor="creditAmount">Amount</label>
